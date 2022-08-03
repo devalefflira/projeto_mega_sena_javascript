@@ -3,3 +3,9 @@ let state = {
   currentGame: [],
   savedGames: []
 };
+
+function start() {
+  console.log('start');
+}
+
+start();
