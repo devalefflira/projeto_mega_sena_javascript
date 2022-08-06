@@ -4,15 +4,42 @@ let state = {
   savedGames: []
 };
 
+// INICIAR A APLICAÇÃO
 function start() {
-  addNumberToGame(1);
-  addNumberToGame(2);
-  addNumberToGame(3);
-  addNumberToGame(4);
-  addNumberToGame(5);
-  addNumberToGame(6);
+  createBoard();
+  newGame();
+}
 
-  console.log(state.currentGame);
+// CRIAR O QUADRO COM OS 60 NÚMEROS
+function createBoard() {
+  state.board = [];
+  for (let i = 1; i <= 60; i++) {
+    state.board.push(i);
+  }
+}
+
+// CRIAR UM NOVO JOGO
+function newGame() {
+  resetGame();
+  render();
+}
+
+// RENDERIZAÇÃO DA PÁGINA
+function render() {
+  renderBoard();
+}
+
+function renderBoard() {
+  divBoard = document.querySelector('#megasena-board');
+  divBoard.innerHTML = '';
+  let ulNumbers = document.createElement('ul');
+  for (let i = 0; i < state.board.length; i++) {
+    let currentNumber = state.board[i];
+    let liNumber = document.createElement('li');
+    liNumber.textContent = currentNumber;
+    ulNumbers.appendChild(liNumber);
+  }
+  divBoard.appendChild(ulNumbers);
 }
 
 // ADICIONAR UM NÚMERO AO JOGO
@@ -75,6 +102,7 @@ function isGameComplete() {
   return state.currentGame.length === 6;
 }
 
+// RESETAR O JOGO
 function resetGame() {
   state.currentGame = [];
 }
