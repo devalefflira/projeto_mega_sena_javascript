@@ -4,13 +4,13 @@ let state = {
   savedGames: []
 };
 
-// INICIAR A APLICAÇÃO
+// Inicia a aplicação
 function start() {
   createBoard();
   newGame();
 }
 
-// CRIAR O QUADRO COM OS 60 NÚMEROS
+// Cria o quadro ou canvas com 60 números
 function createBoard() {
   state.board = [];
   for (let i = 1; i <= 60; i++) {
@@ -18,20 +18,21 @@ function createBoard() {
   }
 }
 
-// CRIAR UM NOVO JOGO
+// Cria um novo jogo
 function newGame() {
   resetGame();
   render();
   console.log(state.currentGame);
 }
 
-// RENDERIZAÇÃO DA PÁGINA
+// Renderização na página
 function render() {
   renderBoard();
   renderButtons();
   renderSavedGames();
 }
 
+// Renderização da lista de números no canvas
 function renderBoard() {
   divBoard = document.querySelector('#megasena-board');
   divBoard.innerHTML = '';
@@ -41,15 +42,21 @@ function renderBoard() {
 
   for (let i = 0; i < state.board.length; i++) {
     let currentNumber = state.board[i];
-    let liNumber = document.createElement('li');
 
+    let liNumber = document.createElement('li');
     liNumber.textContent = currentNumber;
+    liNumber.classList.add('number');
     liNumber.addEventListener('click', handleNumberClick);
+
+    if (isNumberInGame(currentNumber)) {
+      liNumber.classList.add('selected-number');
+    }
     ulNumbers.appendChild(liNumber);
   }
   divBoard.appendChild(ulNumbers);
 }
 
+// Evento que escuta o clique no número escolhido
 function handleNumberClick(event) {
   let value = Number(event.currentTarget.textContent);
   if (isNumberInGame(value)) {
@@ -58,9 +65,10 @@ function handleNumberClick(event) {
     addNumberToGame(value);
   }
   console.log(state.currentGame);
+  render();
 }
 
-// RENDERIZAR O BOTÃO
+// Renderiza na tela os botões
 function renderButtons() {
   let divButtons = document.querySelector('#megasena-buttons');
   divButtons.innerHTML = '';
@@ -72,7 +80,7 @@ function renderButtons() {
   divButtons.appendChild(buttonSaveGame);
 }
 
-// CRIAR O BOTÃO DE NOVO JOGO
+// Cria o botão de Novo Jogo
 function createNewGameButton() {
   let button = document.createElement('button');
   button.textContent = 'Novo Jogo';
@@ -80,7 +88,7 @@ function createNewGameButton() {
   return button;
 }
 
-// CRIAR O BOTÃO DE JOGO ALEATÓRIO
+// Cria o botão de Jogo Aleatório
 function createRandomGameButton() {
   let button = document.createElement('button');
   button.textContent = 'Jogo Aleatório';
@@ -88,17 +96,39 @@ function createRandomGameButton() {
   return button;
 }
 
-// CRIAR O BOTÃO DE SALVAR O JOGO
+// Cria o botão de Salvar Jogo
 function createSaveGameButton() {
   let button = document.createElement('button');
   button.textContent = 'Salvar Jogo';
+  // desabilita o botão "Salvar Jogo" enquanto o jogo não está completo
+  button.disabled = !isGameComplete();
   button.addEventListener('click', saveGame);
   return button;
 }
 
-function renderSavedGames() {}
+// Renderiza na tela os jogos salvos
+function renderSavedGames() {
+  let divSavedGames = document.querySelector('#megasena-saved-games');
+  divSavedGames.innerHTML = '';
 
-// ADICIONAR UM NÚMERO AO JOGO
+  if (state.savedGames.length === 0) {
+    divSavedGames.innerHTML = '<p>Nenhum Jogo Salvo</p>';
+  } else {
+    let ulSavedGames = document.createElement('ul');
+
+    for (let i = 0; i < state.savedGames.length; i++) {
+      let currentGame = state.savedGames[i];
+
+      let liGame = document.createElement('li');
+      liGame.textContent = currentGame.join(', ');
+
+      ulSavedGames.appendChild(liGame);
+    }
+    divSavedGames.appendChild(ulSavedGames);
+  }
+}
+
+// Adiciona um número ao jogo
 function addNumberToGame(numberToAdd) {
   if (numberToAdd < 1 || numberToAdd > 60) {
     console.error('Número inválido', numberToAdd);
@@ -118,7 +148,7 @@ function addNumberToGame(numberToAdd) {
   state.currentGame.push(numberToAdd);
 }
 
-// REMOVER UM NÚMERO DO JOGO
+// Remove um número do jogo
 function removeNumberFromGame(numberToRemove) {
   if (numberToRemove < 1 || numberToRemove > 60) {
     console.error('Número inválido', numberToRemove);
@@ -138,12 +168,12 @@ function removeNumberFromGame(numberToRemove) {
   state.currentGame = newGame;
 }
 
-// VERIFICAR SE JÁ EXITE O NÚMERO NO JOGO
+// Verifica se já existe o número clicado ou escolhido no jogo
 function isNumberInGame(numberToCheck) {
   return state.currentGame.includes(numberToCheck);
 }
 
-// SALVAR O JOGO FEITO
+// Salva o jogo escolhido ou gerado aleatoriamente
 function saveGame() {
   if (!isGameComplete()) {
     console.error('O jogo não está completo!');
@@ -155,17 +185,17 @@ function saveGame() {
   console.log(state.currentGame);
 }
 
-// VERIFICAR SE O JOGO ESTÁ COMPLETO
+// Verifica se o jogo está completo
 function isGameComplete() {
   return state.currentGame.length === 6;
 }
 
-// RESETAR O JOGO
+// Reseta ou reinicia o jogo
 function resetGame() {
   state.currentGame = [];
 }
 
-// CRIAR JOGO ALEATÓRIO
+// Cria um jogo aleatório
 function randomGame() {
   resetGame();
 
@@ -174,6 +204,7 @@ function randomGame() {
     addNumberToGame(randomNumber);
   }
   console.log(state.currentGame);
+  render();
 }
-
+// Chama a função que faz a aplicação funcionar
 start();

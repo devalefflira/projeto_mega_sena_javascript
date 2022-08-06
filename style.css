@@ -1,6 +1,82 @@
+body {
+  background-color: #d3d3d3;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0.625rem;
+}
+
+h1 {
+  text-align: center;
+}
+
+main {
+  align-items: center;
+  justify-content: center;
+}
+
 button {
   cursor: pointer;
+  margin: 0.625rem;
+  height: 3.125rem;
+  width: 7.5rem;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #00bfff;
+  color: #f5f5f5;
+}
+
+#megasena-buttons {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#megasena-saved-games {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #808080;
+}
+
+#megasena-saved-games li {
+  list-style: none;
+  text-align: center;
+  color: #f5f5f5;
+  font-weight: bold;
 }
 
 .numbers {
+  border: 1px solid #808080;
+  font-family: monospace;
+  font-size: 1.25rem;
+  justify-content: center;
+  list-style-type: none;
+  margin: 0 auto;
+  padding: 0.625rem;
+  text-align: center;
+  width: 75vw;
+}
+
+.number {
+  border: 1px solid #808080;
+  border-radius: 100%;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0.625rem;
+  padding: 0.3125rem;
+  user-select: none;
+  width: 1.5625rem;
+}
+
+.number:hover {
+  background-color: #00bfff;
+  color: #f5f5f5;
+  font-weight: bold;
+}
+
+.selected-number {
+  background-color: #32cd32;
+  color: #f5f5f5;
+  font-weight: bold;
 }
