@@ -22,25 +22,81 @@ function createBoard() {
 function newGame() {
   resetGame();
   render();
+  console.log(state.currentGame);
 }
 
 // RENDERIZAÇÃO DA PÁGINA
 function render() {
   renderBoard();
+  renderButtons();
+  renderSavedGames();
 }
 
 function renderBoard() {
   divBoard = document.querySelector('#megasena-board');
   divBoard.innerHTML = '';
+
   let ulNumbers = document.createElement('ul');
+  ulNumbers.classList.add('numbers');
+
   for (let i = 0; i < state.board.length; i++) {
     let currentNumber = state.board[i];
     let liNumber = document.createElement('li');
+
     liNumber.textContent = currentNumber;
+    liNumber.addEventListener('click', handleNumberClick);
     ulNumbers.appendChild(liNumber);
   }
   divBoard.appendChild(ulNumbers);
 }
+
+function handleNumberClick(event) {
+  let value = Number(event.currentTarget.textContent);
+  if (isNumberInGame(value)) {
+    removeNumberFromGame(value);
+  } else {
+    addNumberToGame(value);
+  }
+  console.log(state.currentGame);
+}
+
+// RENDERIZAR O BOTÃO
+function renderButtons() {
+  let divButtons = document.querySelector('#megasena-buttons');
+  divButtons.innerHTML = '';
+  let buttonNewGame = createNewGameButton();
+  let buttonRandomGame = createRandomGameButton();
+  let buttonSaveGame = createSaveGameButton();
+  divButtons.appendChild(buttonNewGame);
+  divButtons.appendChild(buttonRandomGame);
+  divButtons.appendChild(buttonSaveGame);
+}
+
+// CRIAR O BOTÃO DE NOVO JOGO
+function createNewGameButton() {
+  let button = document.createElement('button');
+  button.textContent = 'Novo Jogo';
+  button.addEventListener('click', newGame);
+  return button;
+}
+
+// CRIAR O BOTÃO DE JOGO ALEATÓRIO
+function createRandomGameButton() {
+  let button = document.createElement('button');
+  button.textContent = 'Jogo Aleatório';
+  button.addEventListener('click', randomGame);
+  return button;
+}
+
+// CRIAR O BOTÃO DE SALVAR O JOGO
+function createSaveGameButton() {
+  let button = document.createElement('button');
+  button.textContent = 'Salvar Jogo';
+  button.addEventListener('click', saveGame);
+  return button;
+}
+
+function renderSavedGames() {}
 
 // ADICIONAR UM NÚMERO AO JOGO
 function addNumberToGame(numberToAdd) {
@@ -95,6 +151,8 @@ function saveGame() {
   }
 
   state.savedGames.push(state.currentGame);
+  newGame();
+  console.log(state.currentGame);
 }
 
 // VERIFICAR SE O JOGO ESTÁ COMPLETO
@@ -105,6 +163,17 @@ function isGameComplete() {
 // RESETAR O JOGO
 function resetGame() {
   state.currentGame = [];
+}
+
+// CRIAR JOGO ALEATÓRIO
+function randomGame() {
+  resetGame();
+
+  while (!isGameComplete()) {
+    let randomNumber = Math.ceil(Math.random() * 60);
+    addNumberToGame(randomNumber);
+  }
+  console.log(state.currentGame);
 }
 
 start();
